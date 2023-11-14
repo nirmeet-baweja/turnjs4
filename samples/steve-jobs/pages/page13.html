@@ -1,6 +1,14 @@
 <div class="book-content">
-<div class="image-box">
-	<img class="image-cropped-calc-vertical" src="samples/steve-jobs/pics/landscape1.png?p" style="right:57px;">
-</div>
+	<div class="image-box">
+		<img id="right-page" class="image-cropped-calc-vertical">
+	</div>
 </div>
 <span class="page-number">13</span>
+<script>
+	const image = document.querySelector("#right-page");
+	console.log(image);
+	image.onload = () => {
+		image.style.right = getSideGap(image) + "px";
+	};
+	image.src="samples/steve-jobs/pics/landscape1.png?p"
+</script>
