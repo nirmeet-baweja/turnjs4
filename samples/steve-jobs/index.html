@@ -33,11 +33,11 @@
 <script type="text/javascript">
 
 function loadApp() {
-	
+
 	var flipbook = $('.sj-book');
 
 	// Check if the CSS was already loaded
-	
+
 	if (flipbook.width()==0 || flipbook.height()==0) {
 		setTimeout(loadApp, 10);
 		return;
@@ -70,7 +70,7 @@ function loadApp() {
 
 		if (data.scrollTimer)
 			clearInterval(data.scrollTimer);
-		
+
 		data.scrollTimer = setTimeout(function(){
 			data.scrollX = undefined;
 			data.scrollPage = undefined;
@@ -108,7 +108,7 @@ function loadApp() {
 
 			if (window._thumbPreview)
 				_thumbPreview.removeClass('show');
-			
+
 			$('.sj-book').turn('page', Math.max(1, $(this).slider('value')*2 - 2));
 
 		}
@@ -116,7 +116,7 @@ function loadApp() {
 
 
 	// URIs
-	
+
 	Hash.on('^page\/([0-9]*)$', {
 		yep: function(path, parts) {
 
@@ -148,7 +148,7 @@ function loadApp() {
 
 			break;
 			case next:
-				
+
 				$('.sj-book').turn('next');
 
 			break;
@@ -170,13 +170,13 @@ function loadApp() {
 		pages: 112,
 		when: {
 			turning: function(e, page, view) {
-				
+
 				var book = $(this),
 					currentPage = book.turn('page'),
 					pages = book.turn('pages');
 
 				if (currentPage>3 && currentPage<pages-3) {
-				
+
 					if (page==1) {
 						book.turn('page', 2).turn('stop').turn('page', page);
 						e.preventDefault();
@@ -199,7 +199,7 @@ function loadApp() {
 				}
 
 				updateDepth(book, page);
-				
+
 				if (page>=2)
 					$('.sj-book .p2').addClass('fixed');
 				else
@@ -211,7 +211,7 @@ function loadApp() {
 					$('.sj-book .p111').removeClass('fixed');
 
 				Hash.go('page/'+page).update();
-					
+
 			},
 
 			turned: function(e, page, view) {
@@ -223,7 +223,14 @@ function loadApp() {
 				}
 
 				updateDepth(book);
-				
+
+				for(const child of e.target.children) {
+					let childPageNumber = parseInt(child.getAttribute("page"));
+					if(childPageNumber) {
+						updateImagePosition(child, childPageNumber);
+					}
+				}
+
 				$('#slider').slider('value', getViewNumber(book, page));
 
 				book.turn('center');
@@ -231,19 +238,19 @@ function loadApp() {
 			},
 
 			start: function(e, pageObj) {
-		
+
 				moveBar(true);
 
 			},
 
 			end: function(e, pageObj) {
-			
+
 				var book = $(this);
 
 				updateDepth(book);
 
 				setTimeout(function() {
-					
+
 					$('#slider').slider('value', getViewNumber(book));
 
 				}, 1);

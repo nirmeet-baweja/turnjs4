@@ -241,28 +241,23 @@ function isChrome() {
  * @param {HTMLElement} image HTMlELemnent of type image
  * @returns {Number}	the gap that should on each side of the image to center it
  */
-function getSideGap(image) {
+function getImageSideGap(image) {
     const {imageWidth, imageHeight, imageContainerWidthDouble, imageContainerHeight} = getImageDimensions(image);
 
     const mappedImageWidth = (imageWidth * imageContainerHeight) / imageHeight;
-    console.log(`Mapped Width ${mappedImageWidth}`);
 
     const totalGap = imageContainerWidthDouble - mappedImageWidth;
     const singleSideGap = Math.floor(totalGap/2);
-    console.log("The calculated gap is: ");
-    console.log(singleSideGap);
     return singleSideGap;
 }
 
 function getImageDimensions(image) {
 	const imageWidth = image.naturalWidth;
     const imageHeight = image.naturalHeight;
-    console.log(`Img width: ${imageWidth} Img height: ${imageHeight}`);
 
     const imageContainer = image.parentElement;
     const imageContainerWidthDouble = imageContainer.clientWidth * 2;
     const imageContainerHeight = imageContainer.clientHeight;
-    console.log(`Container width: ${imageContainerWidthDouble} Container height: ${imageContainerHeight}`);
 
 	return {
 		imageWidth,
@@ -270,4 +265,18 @@ function getImageDimensions(image) {
 		imageContainerWidthDouble,
 		imageContainerHeight
 	};
+}
+
+function updateImagePosition(pageEl, pageNumber) {
+	if(Number(pageNumber)) {
+		let image = pageEl.querySelector(".image-cropped-calc-vertical");
+		if(image) {
+			let gap = getImageSideGap(image);
+			if(pageNumber % 2) {
+				image.style.right = `${gap}px`;
+			} else {
+				image.style.left = `${gap}px`;
+			}
+		}
+	}
 }
